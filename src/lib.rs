@@ -232,6 +232,24 @@ extern "C" {
 //
 #[allow(dead_code)]
 extern "C" {
+  /// Create a bytes message.
+  pub fn tibemsBytesMsg_Create(
+    message: *mut usize) -> tibems_status;
+  /// Get the body length (in bytes) of a bytes message.
+  pub fn tibemsBytesMsg_GetBodyLength(
+    message: usize,
+    return_length: *mut i32) -> tibems_status;
+  /// Get the body data of a bytes message.
+  pub fn tibemsBytesMsg_GetBytes(
+    message: usize,
+    bytes: *mut *mut c_void,
+    byteSize: *mut u32) -> tibems_status;
+  /// Set the body data of a bytes message from a byte sequence.
+  pub fn tibemsBytesMsg_SetBytes(
+    message: usize,
+    bytes: *const c_void,
+    byteSize: u32) -> tibems_status;
+  
   /// Create a message object.
   pub fn tibemsMsg_Create(
     message: *mut usize) -> tibems_status;
@@ -281,7 +299,6 @@ extern "C" {
     message: usize,
     name: *const c_char,
     result: *mut tibems_bool) -> tibems_status;
-
   /// Recover a single message.
   pub fn tibemsMsg_Recover(
     message: usize) -> tibems_status;
@@ -302,7 +319,6 @@ extern "C" {
     message: usize, 
     name: *const c_char,
     value: *const c_char) -> tibems_status;
-
   /// Set the type header of a message.
   pub fn tibemsMsg_SetType(
     message: usize,
