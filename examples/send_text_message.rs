@@ -1,37 +1,4 @@
-# tibco_ems-sys
-[![Latest Version](https://img.shields.io/crates/v/tibco_ems-sys.svg)](https://crates.io/crates/tibco_ems-sys)
-
-Rust bindings for the Tibco EMS C library.
-
-A high-level API is provided through the `tibco_ems` crate.
-
-[![Latest Version](https://img.shields.io/crates/v/tibco_ems.svg)](https://crates.io/crates/tibco_ems)
-
-
-# License
-tibco_ems is licensed under Apache License, Version 2.0 (LICENSE-APACHE or http://www.apache.org/licenses/LICENSE-2.0).
-
-TIBCO Enterprise Messaging Service, and all related components therein are property of TIBCO Software, and are not provided with this software package. Refer to your own TIBCO License terms for details.
-
-# Build
-
-To build this crate, the TIBCO EMS C library must either be in the LD_LIBRARY_PATH or alternatively a EMS_HOME environment variable must be set.
-
-## Usage
-
-Put this in your `Cargo.toml`:
-
-```text
-[dependencies]
-tibco_ems-sys = "0.1"
-```
-
-## Examples
-
-Sending a text message to a queue.
-
-```rust
-use tibco_ems::c_binding::*;
+use tibco_ems_sys::*;
 use std::ffi::CString;
 
 fn main() {
@@ -77,4 +44,3 @@ fn main() {
     println!("tibemsMsgProducer_Send: {:?}",status);
   }
 }
-```
