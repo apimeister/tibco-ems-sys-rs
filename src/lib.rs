@@ -1,3 +1,7 @@
+#![deny(missing_docs)]
+
+//! Bindings for the EMS C library.
+
 use std::ffi::c_void;
 use std::os::raw::c_char;
 
@@ -127,8 +131,6 @@ extern "C" {
     session: *mut usize,
     transacted: tibems_bool,
     acknowledgeMode: tibemsAcknowledgeMode) -> tibems_status;
-  /// Close a session; reclaim resources.
-  pub fn tibemsSession_Close(session: usize) -> tibems_status;
   /// Create a destination object.
   pub fn tibemsDestination_Create(
     destination: *mut usize,
@@ -137,19 +139,18 @@ extern "C" {
   /// Destroy a destination object.
   pub fn tibemsDestination_Destroy(
     destination: usize) -> tibems_status;
-  /// Create a message producer.
-  pub fn tibemsSession_CreateProducer(
-    session: usize,
-    producer: *mut usize,
-    destination: usize ) -> tibems_status;
-  /// Create a text message.
-  pub fn tibemsSession_CreateTextMessage(
-    session: usize,
-    textMsg: *mut tibemsMsg) -> tibems_status;
-  /// Create a message.
-  pub fn tibemsSession_CreateMessage(
-    session: usize,
-    textMsg: *mut usize) -> tibems_status;
+  }
+
+//
+// session
+//
+#[allow(dead_code)]
+extern "C" {
+  /// Close a session; reclaim resources.
+  pub fn tibemsSession_Close(session: usize) -> tibems_status;
+  /// Commit the open transaction.
+  pub fn tibemsSession_Commit(
+    session: usize) -> tibems_status;
   /// Create a message consumer
   pub fn tibemsSession_CreateConsumer(
     session: usize,
@@ -157,6 +158,35 @@ extern "C" {
     destination: usize,
     messageSelector: *const c_char,
     noLocal: tibems_bool) -> tibems_status;
+  /// Create a message.
+  pub fn tibemsSession_CreateMessage(
+    session: usize,
+    textMsg: *mut usize) -> tibems_status;
+
+  /// Create a message producer.
+  pub fn tibemsSession_CreateProducer(
+    session: usize,
+    producer: *mut usize,
+    destination: usize ) -> tibems_status;
+  /// Create a temporary queue.
+  pub fn tibemsSession_CreateTemporaryQueue(
+    session: usize,
+    tmpQueue: *mut usize) -> tibems_status;
+  /// Create a temporary topic.
+  pub fn tibemsSession_CreateTemporaryTopic(
+    session: usize,
+    tmpTopic: *mut usize) -> tibems_status;
+  /// Create a text message.
+  pub fn tibemsSession_CreateTextMessage(
+    session: usize,
+    textMsg: *mut tibemsMsg) -> tibems_status;
+}
+
+//
+// producer
+//
+#[allow(dead_code)]
+extern "C" {
   /// Send a message.
   pub fn tibemsMsgProducer_Send(
     msgProducer: usize,
@@ -179,45 +209,13 @@ extern "C" {
     context: tibemsLookupContext,
     name: *const c_char,
     destination: *mut tibemsDestination) -> tibems_status;
-  /// Destroy a message.
-  pub fn tibemsMsg_Destroy(
-    message: usize) -> tibems_status;
-  /// Set the value of a message property.
-  pub fn tibemsMsg_SetStringProperty(
-    message: usize, 
-    name: *const c_char,
-    value: *const c_char) -> tibems_status;
-  /// Get the message ID header from a message.
-  pub fn tibemsMsg_GetMessageID(
-    message: usize,
-    value: *const *const c_char ) -> tibems_status;
-  /// Create a text message.
-  pub fn tibemsTextMsg_Create(
-    message: *mut usize) -> tibems_status;
-  /// Get the body type of a message.
-  pub fn tibemsMsg_GetBodyType(
-    message: usize,
-    bodyType: *mut tibemsMsgType) -> tibems_status;
-  /// Get the timestamp header from a message.
-  pub fn tibemsMsg_GetTimestamp(
-    message: usize,
-    value: *mut i64) -> tibems_status;
-  /// Get the reply-to header from a message.
-  pub fn tibemsMsg_GetReplyTo(
-    message: usize,
-    value: *mut usize) -> tibems_status;
-  /// Set the reply-to header of a message.
-  pub fn tibemsMsg_SetReplyTo(
-    message: usize,
-    value: usize) -> tibems_status;
-  /// Get the string data from a text message.
-  pub fn tibemsTextMsg_GetText(
-    message: usize,
-    text: *const *const c_char) -> tibems_status;
-  /// Set the data string of a text message.
-  pub fn tibemsTextMsg_SetText(
-    message: usize,
-    text: *const c_char) -> tibems_status;
+}
+
+//
+// consumer
+//
+#[allow(dead_code)]
+extern "C" {
   /// Receive a message (synchronous).
   pub fn tibemsMsgConsumer_Receive(
     msgConsumer: usize,
@@ -226,36 +224,159 @@ extern "C" {
   pub fn tibemsMsgConsumer_ReceiveTimeout(
     msgConsumer: usize,
     message: *mut usize,
-    timeout: i64) -> tibems_status;  
+    timeout: i64) -> tibems_status;
+}
+
+//
+// messages
+//
+#[allow(dead_code)]
+extern "C" {
+  /// Create a message object.
+  pub fn tibemsMsg_Create(
+    message: *mut usize) -> tibems_status;
+  /// Destroy a message.
+  pub fn tibemsMsg_Destroy(
+    message: usize) -> tibems_status;
+  /// Get the body type of a message.
+  pub fn tibemsMsg_GetBodyType(
+    message: usize,
+    bodyType: *mut tibemsMsgType) -> tibems_status;
+  /// Get the value of a message property.
+  pub fn tibemsMsg_GetBooleanProperty(
+    message: usize,
+    name: *const c_char,
+    value: *mut tibems_bool) -> tibems_status;
+  /// Get the value of a message property.
+  pub fn tibemsMsg_GetByteProperty(
+    message: usize, 
+    name: *const c_char,
+    value: *mut c_char) -> tibems_status;
+  /// Get the correlation ID header of a message.
+  pub fn tibemsMsg_GetCorrelationID(
+    message: usize,
+    value: *const *const c_char) -> tibems_status;
+  /// Get the message ID header from a message.
+  pub fn tibemsMsg_GetMessageID(
+    message: usize,
+    value: *const *const c_char ) -> tibems_status;
+  /// Get a list of property names from a message.
+  pub fn tibemsMsg_GetPropertyNames(
+    message: usize,
+    enumeration: *mut usize) -> tibems_status;
+  /// Get the reply-to header from a message.
+  pub fn tibemsMsg_GetReplyTo(
+    message: usize,
+    value: *mut usize) -> tibems_status;
+  /// Get the timestamp header from a message.
+  pub fn tibemsMsg_GetTimestamp(
+    message: usize,
+    value: *mut i64) -> tibems_status;
+  /// Get the type header of a message.
+  pub fn tibemsMsg_GetType(
+    message: usize,
+    value: *const *const c_char) -> tibems_status;
+  /// Test whether a named property has been set on a message.
+  pub fn tibemsMsg_PropertyExists(
+    message: usize,
+    name: *const c_char,
+    result: *mut tibems_bool) -> tibems_status;
+
+  /// Recover a single message.
+  pub fn tibemsMsg_Recover(
+    message: usize) -> tibems_status;
+  /// Set the correlation ID header of a message.
+  pub fn tibemsMsg_SetCorrelationID(
+    message: usize,
+    value: *const c_char) -> tibems_status;
+  /// Set the expiration header of a message.
+  pub fn tibemsMsg_SetExpiration(
+    message: usize,
+    value: i64) -> tibems_status;
+  /// Set the reply-to header of a message.
+  pub fn tibemsMsg_SetReplyTo(
+    message: usize,
+    value: usize) -> tibems_status;
+  /// Set the value of a message property.
+  pub fn tibemsMsg_SetStringProperty(
+    message: usize, 
+    name: *const c_char,
+    value: *const c_char) -> tibems_status;
+
+  /// Set the type header of a message.
+  pub fn tibemsMsg_SetType(
+    message: usize,
+    value: *const c_char) -> tibems_status;
+  /// Destroy a message enumerator.
+  pub fn tibemsMsgEnum_Destroy(
+    enumeration: usize) -> tibems_status;
+  /// Get the next item from a message enumerator.
+  pub fn tibemsMsgEnum_GetNextName(
+    enumeration: usize,
+    name: *const *const c_char) -> tibems_status;
+
+  /// Create a text message.
+  pub fn tibemsTextMsg_Create(
+    message: *mut usize) -> tibems_status;
+  /// Get the string data from a text message.
+  pub fn tibemsTextMsg_GetText(
+    message: usize,
+    text: *const *const c_char) -> tibems_status;
+  /// Set the data string of a text message.
+  pub fn tibemsTextMsg_SetText(
+    message: usize,
+    text: *const c_char) -> tibems_status;
 }
 
 /// struct to hold the error context
 #[allow(dead_code)]
 #[repr(C)]
-pub struct tibemsErrorContext { pub _val: [u8; 0] }
+pub struct tibemsErrorContext{
+  /// internal value
+  pub _val: [u8; 0]
+}
 
 /// struct to hold the connection factory
 #[allow(dead_code)]
 #[repr(C)]
-pub struct tibemsConnectionFactory { pub _val: [u8; 0] }
+pub struct tibemsConnectionFactory{
+  /// internal value
+  pub _val: [u8; 0]
+}
 
+/// struct to hold the connection
 #[allow(dead_code)]
 #[repr(C)]
-pub struct tibemsDestination { pub _val: usize }
+pub struct tibemsDestination{
+  /// internal value
+  pub _val: usize
+}
 
+/// struct to hold the message
 #[allow(dead_code)]
 #[repr(C)]
-pub struct tibemsMsg { pub _val: usize }
+pub struct tibemsMsg{
+  /// internal value
+  pub _val: usize
+}
 
+/// struct to hold the admin connection
 #[allow(dead_code)]
 #[repr(C)]
 #[derive(Copy,Clone,Debug)]
-pub struct tibemsAdmin { pub _val: usize }
+pub struct tibemsAdmin{
+  /// internal value
+  pub _val: usize
+}
 
+/// struct to hold the lookup context
 #[allow(dead_code)]
 #[repr(C)]
 #[derive(Copy,Clone,Debug)]
-pub struct tibemsLookupContext { pub _val: [u8; 0] }
+pub struct tibemsLookupContext{
+  /// internal value
+  pub _val: [u8; 0]
+}
 
 /// body types of a message
 #[allow(dead_code)]
@@ -333,17 +454,24 @@ pub enum tibems_permType{
 pub enum tibemsAcknowledgeMode{
   /// transacted
   TIBEMS_SESSION_TRANSACTED                   = 0,
-  /// auto
+  /// In this mode, the session automatically acknowledges a message when message processing is finished—that is, when either of these calls returns successfully:
+  /// synchronous receive calls (such as tibemsMsgConsumer_Receive)
+  /// asynchronous listener callback (namely, tibemsMsgCallback)
   TIBEMS_AUTO_ACKNOWLEDGE                     = 1,
-  /// client
+  /// In this mode, the client program acknowledges receipt by calling tibemsMsg_Acknowledge. Each call acknowledges all messages received so far.
   TIBEMS_CLIENT_ACKNOWLEDGE                   = 2,
-  /// dups ok
+  /// As with TIBEMS_AUTO_ACKNOWLEDGE, the session automatically acknowledges messages. However, it may do so lazily.
+  /// Lazy means that the provider client library can delay transferring the acknowledgement to the server until a convenient time; meanwhile the server might redeliver the message. Lazy acknowledgement can reduce session overhead.
   TIBEMS_DUPS_OK_ACKNOWLEDGE                  = 3,
-  /// no ack, extensions to the JMS spec
+  /// In TIBEMS_NO_ACKNOWLEDGE mode, messages do not require acknowledgement (which reduces message overhead). The server never redelivers messages.
+  /// This mode and behavior are proprietary extensions, specific to TIBCO EMS.
   TIBEMS_NO_ACKNOWLEDGE                       = 22,
-  /// explicit ack, Extensions to the JMS spec
+  /// As with TIBEMS_CLIENT_ACKNOWLEDGE, the client program acknowledges receipt by calling tibemsMsg_Acknowledge. However, each call acknowledges only the individual message. The client may acknowledge messages in any order.
+  /// This mode and behavior are proprietary extensions, specific to TIBCO EMS.
   TIBEMS_EXPLICIT_CLIENT_ACKNOWLEDGE          = 23,
-  /// explicit ack + dups ok, extensions to the JMS spec
+  /// In this mode, the client program lazily acknowledges only the individual message, by calling tibemsMsg_Acknowledge. The client may acknowledge messages in any order.
+  /// Lazy means that the provider client library can delay transferring the acknowledgement to the server until a convenient time; meanwhile the server might redeliver the message.
+  /// This mode and behavior are proprietary extensions, specific to TIBCO EMS.
   TIBEMS_EXPLICIT_CLIENT_DUPS_OK_ACKNOWLEDGE  = 24
 }
 
@@ -377,7 +505,8 @@ pub enum tibems_status{
   /// An attempt to connect to the server has failed.
   /// The operation requires a server connection, but the program is not connected.
   TIBEMS_SERVER_NOT_CONNECTED        = 11,
-    TIBEMS_VERSION_MISMATCH            = 12,
+  /// TIBEMS_VERSION_MISMATCH
+  TIBEMS_VERSION_MISMATCH            = 12,
   /// The server cannot create a topic or durable because the name is already in use. (Also applies to collisions with external subjects, such as Rendezvous.)
   TIBEMS_SUBJECT_COLLISION           = 13,
   /// Cannot create a connection or transaction because the specified protocol does not exist.
@@ -393,11 +522,12 @@ pub enum tibems_status{
   TIBEMS_INVALID_ARG                 = 20,
   /// The server has exceeded the maximum number of licensed connections or hosts that it can service.
   TIBEMS_SERVER_LIMIT                = 21,
-
-    TIBEMS_MSG_DUPLICATE               = 22,
-
-    TIBEMS_SERVER_DISCONNECTED         = 23,
-    TIBEMS_SERVER_RECONNECTING         = 24,
+  /// TIBEMS_MSG_DUPLICATE
+  TIBEMS_MSG_DUPLICATE               = 22,
+  /// TIBEMS_SERVER_DISCONNECTED
+  TIBEMS_SERVER_DISCONNECTED         = 23,
+  /// TIBEMS_SERVER_RECONNECTING
+  TIBEMS_SERVER_RECONNECTING         = 24,
   /// The function call is not permitted (for example, closing a connection within a callback).
   TIBEMS_NOT_PERMITTED               = 27,
   /// Exception callback handler functions receive this code to indicate that the server has reconnected.
@@ -407,26 +537,31 @@ pub enum tibems_status{
   /// The most common syntax error is a prefix other than tibjmsnaming:// (or a misspelling).
   /// See also, tibemsLookupContext.
   TIBEMS_INVALID_NAME                = 30,
-    TIBEMS_INVALID_TYPE                = 31,
+  /// TIBEMS_INVALID_TYPE
+  TIBEMS_INVALID_TYPE                = 31,
   /// An argument is outside the range of valid values.
   TIBEMS_INVALID_SIZE                = 32,
-    TIBEMS_INVALID_COUNT               = 33,
+  /// TIBEMS_INVALID_COUNT
+  TIBEMS_INVALID_COUNT               = 33,
   /// 1. The name lookup repository cannot find a name; the name is not bound. See also, tibemsLookupContext
   /// 2. A function that gets a message field or property value cannot find the specified item because the name is not bound in the message.
   TIBEMS_NOT_FOUND                   = 35,
-    TIBEMS_ID_IN_USE                   = 36,
-    TIBEMS_ID_CONFLICT                 = 37,
+  /// TIBEMS_ID_IN_USE
+  TIBEMS_ID_IN_USE                   = 36,
+  /// TIBEMS_ID_CONFLICT
+  TIBEMS_ID_CONFLICT                 = 37,
   /// A datatype conversion failed while parsing a message (converting UTF-8 data to native datatypes).
   TIBEMS_CONVERSION_FAILED           = 38,
   /// The message is uninitialized or corrupt.
   TIBEMS_INVALID_MSG                 = 42,
   /// The message contains an invalid field. The message might be corrupt.
   TIBEMS_INVALID_FIELD               = 43,
-    TIBEMS_INVALID_INSTANCE            = 44,
+  /// TIBEMS_INVALID_INSTANCE
+  TIBEMS_INVALID_INSTANCE            = 44,
   /// The message is corrupt.
   TIBEMS_CORRUPT_MSG                 = 45,
-
-    TIBEMS_PRODUCER_FAILED             = 47,
+  /// TIBEMS_PRODUCER_FAILED
+  TIBEMS_PRODUCER_FAILED             = 47,
   /// The timeout has expired while waiting for a message. See tibemsMsgConsumer_ReceiveTimeout.
   TIBEMS_TIMEOUT                     = 50,
   /// A blocking operation has been interrupted. See tibemsMsgConsumer_Receive.
@@ -437,17 +572,20 @@ pub enum tibems_status{
   TIBEMS_MEM_LIMIT_EXCEEDED          = 53,
   /// IBM z/OS only. A blocking operation has been interrupted. See tibx_MVSConsole_SetConsumer().
   TIBEMS_USER_INTR                   = 54,
-
-    TIBEMS_INVALID_QUEUE_GROUP         = 63,
-    TIBEMS_INVALID_TIME_INTERVAL       = 64,
+  /// TIBEMS_INVALID_QUEUE_GROUP
+  TIBEMS_INVALID_QUEUE_GROUP         = 63,
+  /// TIBEMS_INVALID_TIME_INTERVAL
+  TIBEMS_INVALID_TIME_INTERVAL       = 64,
   /// The function detected an invalid I/O source (such as a socket or file).
   TIBEMS_INVALID_IO_SOURCE           = 65,
-    TIBEMS_INVALID_IO_CONDITION        = 66,
-    TIBEMS_SOCKET_LIMIT                = 67,
+  /// TIBEMS_INVALID_IO_CONDITION
+  TIBEMS_INVALID_IO_CONDITION        = 66,
+  /// TIBEMS_SOCKET_LIMIT
+  TIBEMS_SOCKET_LIMIT                = 67,
   /// An operating system error occurred during the call.
   TIBEMS_OS_ERROR                    = 68,
-
-    TIBEMS_WOULD_BLOCK                 = 69,
+  /// TIBEMS_WOULD_BLOCK
+  TIBEMS_WOULD_BLOCK                 = 69,
   /// The result of the call overflowed the buffer supplied by the program.
   TIBEMS_INSUFFICIENT_BUFFER         = 70,
   /// The call detected an unexpected end-of-file.
@@ -458,8 +596,8 @@ pub enum tibems_status{
   TIBEMS_FILE_NOT_FOUND              = 73,
   /// An operating system I/O call failed.
   TIBEMS_IO_FAILED                   = 74,
-
-    TIBEMS_NOT_FILE_OWNER              = 80,
+  /// TIBEMS_NOT_FILE_OWNER
+  TIBEMS_NOT_FILE_OWNER              = 80,
   /// Cannot create an item that already exists.
   TIBEMS_ALREADY_EXISTS              = 91,
   /// The connection is invalid.
@@ -472,7 +610,8 @@ pub enum tibems_status{
   TIBEMS_INVALID_PRODUCER            = 103,
   /// The server could not authenticate the user.
   TIBEMS_INVALID_USER                = 104,
-    TIBEMS_INVALID_GROUP               = 105,
+  /// TIBEMS_INVALID_GROUP
+  TIBEMS_INVALID_GROUP               = 105,
   /// A transaction failed at the server during a commit call.
   TIBEMS_TRANSACTION_FAILED          = 106,
   /// Failure during prepare or commit caused automatic rollback of a transaction. This type of rollback can occur during fault tolerance failover.
@@ -483,10 +622,10 @@ pub enum tibems_status{
   TIBEMS_INVALID_XARESOURCE          = 109,
   /// The producer attempted to send a message immediately after a fault tolerance failover to another server. The new server has no record of the transaction.
   TIBEMS_FT_SERVER_LACKS_TRANSACTION = 110,
-
-    TIBEMS_LDAP_ERROR                  = 120,
-    TIBEMS_INVALID_PROXY_USER          = 121,
-
+  /// TIBEMS_LDAP_ERROR
+  TIBEMS_LDAP_ERROR                  = 120,
+  /// TIBEMS_INVALID_PROXY_USER
+  TIBEMS_INVALID_PROXY_USER          = 121,
   /// SSL detected an invalid X.509 certificate.
   TIBEMS_INVALID_CERT                = 150,
   /// SSL detected an X.509 certificate that is not yet valid; that is, the current date is before the first date for which the certificate becomes valid.
@@ -505,31 +644,48 @@ pub enum tibems_status{
   TIBEMS_INVALID_ENCODING            = 157,
   /// SSL lacks sufficient random data to complete an operation securely.
   TIBEMS_NOT_ENOUGH_RANDOM           = 158,
-    TIBEMS_INVALID_CRL_DATA            = 159,
-    TIBEMS_CRL_OFF                     = 160,
-    TIBEMS_EMPTY_CRL                   = 161,
+  /// TIBEMS_INVALID_CRL_DATA
+  TIBEMS_INVALID_CRL_DATA            = 159,
+  /// TIBEMS_CRL_OFF
+  TIBEMS_CRL_OFF                     = 160,
+  /// TIBEMS_EMPTY_CRL
+  TIBEMS_EMPTY_CRL                   = 161,
   /// Initialization of the tibems library failed. For example, this code could be generated if the library failed to allocate memory while building its basic structures.
   TIBEMS_NOT_INITIALIZED             = 200,
-    TIBEMS_INIT_FAILURE                = 201,
-    TIBEMS_ARG_CONFLICT                = 202,
-    TIBEMS_SERVICE_NOT_FOUND           = 210,
-    TIBEMS_INVALID_CALLBACK            = 211,
-    TIBEMS_INVALID_QUEUE               = 212,
-    TIBEMS_INVALID_EVENT               = 213,
-    TIBEMS_INVALID_SUBJECT             = 214,
-    TIBEMS_INVALID_DISPATCHER          = 215,
+  /// TIBEMS_INIT_FAILURE
+  TIBEMS_INIT_FAILURE                = 201,
+  /// TIBEMS_ARG_CONFLICT
+  TIBEMS_ARG_CONFLICT                = 202,
+  /// TIBEMS_SERVICE_NOT_FOUND
+  TIBEMS_SERVICE_NOT_FOUND           = 210,
+  /// TIBEMS_INVALID_CALLBACK
+  TIBEMS_INVALID_CALLBACK            = 211,
+  /// TIBEMS_INVALID_QUEUE
+  TIBEMS_INVALID_QUEUE               = 212,
+  /// TIBEMS_INVALID_EVENT
+  TIBEMS_INVALID_EVENT               = 213,
+  /// TIBEMS_INVALID_SUBJECT
+  TIBEMS_INVALID_SUBJECT             = 214,
+  /// TIBEMS_INVALID_DISPATCHER
+  TIBEMS_INVALID_DISPATCHER          = 215,
     
-    /* JVM related errors */
-    TIBEMS_JNI_EXCEPTION               = 230,
-    TIBEMS_JNI_ERR                     = 231,
-    TIBEMS_JNI_EDETACHED               = 232,
-    TIBEMS_JNI_EVERSION                = 233,
-    TIBEMS_JNI_EEXIST                  = 235,
-    TIBEMS_JNI_EINVAL                  = 236,
-
-    TIBEMS_NO_MEMORY_FOR_OBJECT        = 237,
-
-    TIBEMS_UFO_CONNECTION_FAILURE      = 240,
+  /* JVM related errors */
+  /// TIBEMS_JNI_EXCEPTION
+  TIBEMS_JNI_EXCEPTION               = 230,
+  /// TIBEMS_JNI_ERR
+  TIBEMS_JNI_ERR                     = 231,
+  /// TIBEMS_JNI_EDETACHED
+  TIBEMS_JNI_EDETACHED               = 232,
+  /// TIBEMS_JNI_EVERSION
+  TIBEMS_JNI_EVERSION                = 233,
+  /// TIBEMS_JNI_EEXIST
+  TIBEMS_JNI_EEXIST                  = 235,
+  /// TIBEMS_JNI_EINVAL
+  TIBEMS_JNI_EINVAL                  = 236,
+  /// TIBEMS_NO_MEMORY_FOR_OBJECT
+  TIBEMS_NO_MEMORY_FOR_OBJECT        = 237,
+  /// TIBEMS_UFO_CONNECTION_FAILURE
+  TIBEMS_UFO_CONNECTION_FAILURE      = 240,
   /// The function is not implemented.
   TIBEMS_NOT_IMPLEMENTED             = 255
 }
