@@ -250,6 +250,9 @@ extern "C" {
     bytes: *const c_void,
     byteSize: u32) -> tibems_status;
   
+  /// Acknowledge messages.
+  pub fn tibemsMsg_Acknowledge(
+    message: usize) -> tibems_status;
   /// Create a message object.
   pub fn tibemsMsg_Create(
     message: *mut usize) -> tibems_status;
@@ -286,6 +289,11 @@ extern "C" {
   pub fn tibemsMsg_GetReplyTo(
     message: usize,
     value: *mut usize) -> tibems_status;
+  /// Get the value of a message property.
+  pub fn tibemsMsg_GetStringProperty(
+    message: usize,
+    name: *const c_char,
+    value: *const *const c_char) -> tibems_status;
   /// Get the timestamp header from a message.
   pub fn tibemsMsg_GetTimestamp(
     message: usize,
