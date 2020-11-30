@@ -139,6 +139,19 @@ extern "C" {
   /// Destroy a destination object.
   pub fn tibemsDestination_Destroy(
     destination: usize) -> tibems_status;
+  /// Get the type of a destination object.
+  pub fn tibemsDestination_GetType(
+    destination: usize,
+    destination_type: *mut tibemsDestinationType) -> tibems_status;
+  /// Get the name of a destination object.
+  pub fn tibemsDestination_GetName(
+    destination: usize,
+    name: *mut c_char,
+    name_len: i32) -> tibems_status;
+  /// Create an independent copy of a destination object.
+  pub fn tibemsDestination_Copy(
+    destination: usize,
+    copy: *mut usize) -> tibems_status;
   }
 
 //
@@ -196,7 +209,7 @@ extern "C" {
     msgProducer: usize) -> tibems_status;
   /// Create a queue object.
   pub fn tibemsQueue_Create(
-    queue: *mut tibemsDestination,
+    queue: *mut usize,
     queueName: *const c_char) -> tibems_status;
   /// Create a new EMS lookup context object.
   pub fn tibemsLookupContext_Create(
@@ -208,7 +221,7 @@ extern "C" {
   pub fn tibemsLookupContext_LookupDestination(
     context: tibemsLookupContext,
     name: *const c_char,
-    destination: *mut tibemsDestination) -> tibems_status;
+    destination: *mut usize) -> tibems_status;
 }
 
 //
@@ -366,14 +379,6 @@ pub struct tibemsErrorContext{
 pub struct tibemsConnectionFactory{
   /// internal value
   pub _val: [u8; 0]
-}
-
-/// struct to hold the connection
-#[allow(dead_code)]
-#[repr(C)]
-pub struct tibemsDestination{
-  /// internal value
-  pub _val: usize
 }
 
 /// struct to hold the message
