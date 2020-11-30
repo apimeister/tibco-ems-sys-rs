@@ -146,8 +146,8 @@ extern "C" {
   /// Get the name of a destination object.
   pub fn tibemsDestination_GetName(
     destination: usize,
-    name: *mut c_char,
-    name_len: i32) -> tibems_status;
+    name: *const c_char,
+    name_len: usize) -> tibems_status;
   /// Create an independent copy of a destination object.
   pub fn tibemsDestination_Copy(
     destination: usize,
