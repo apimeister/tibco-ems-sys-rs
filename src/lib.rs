@@ -207,6 +207,8 @@ extern "C" {
   /// Destroy the producer object; reclaim resources.
   pub fn tibemsMsgProducer_Close(
     msgProducer: usize) -> tibems_status;
+  /// Set the time-to-live property of a producer object.
+  pub fn tibemsMsgProducer_SetTimeToLive(msgProducer: usize, timeToLive: i64) -> tibems_status;
   /// Create a queue object.
   pub fn tibemsQueue_Create(
     queue: *mut usize,
@@ -238,6 +240,8 @@ extern "C" {
     msgConsumer: usize,
     message: *mut usize,
     timeout: i64) -> tibems_status;
+  /// Close a message consumer and release associated storage.
+  pub fn tibemsMsgConsumer_Close(msgConsumer: usize) -> tibems_status;
 }
 
 //
