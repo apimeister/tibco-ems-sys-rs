@@ -267,6 +267,137 @@ extern "C" {
     bytes: *const c_void,
     byteSize: u32) -> tibems_status;
   
+  /// Create a map message.
+  pub fn tibemsMapMsg_Create(
+    message: *mut usize) -> tibems_status;
+  /// Get an enumeration of the field names in a map message.
+  pub fn tibemsMapMsg_GetMapNames(
+    message: usize,
+    enumeration: *mut usize) -> tibems_status;
+  /// Get data values from a map message.
+  pub fn tibemsMapMsg_GetBoolean(
+    message: usize,
+    name: *const c_char,
+    value: *mut tibems_bool) -> tibems_status;
+  /// Get data values from a map message.
+  pub fn tibemsMapMsg_GetByte(
+    message: usize,
+    name: *const c_char,
+    value: *mut c_void) -> tibems_status;
+  /// Get data values from a map message.
+  pub fn tibemsMapMsg_GetBytes(
+    message: usize,
+    name: *const c_char,
+    bytes: *const *const c_void,
+    bytesSize: *mut u32) -> tibems_status;
+  /// Get data values from a map message.
+  pub fn tibemsMapMsg_GetChar(
+    message: usize,
+    name: *const c_char,
+    value: *mut c_void) -> tibems_status;
+  /// Get data values from a map message.
+  pub fn tibemsMapMsg_GetDouble(
+    message: usize,
+    name: *const c_char,
+    value: *mut f64) -> tibems_status;
+  /// Get data values from a map message.
+  pub fn tibemsMapMsg_GetField(
+    message: usize,
+    name: *const c_char,
+    value: *mut tibemsMsgField) -> tibems_status;
+  /// Get data values from a map message.
+  pub fn tibemsMapMsg_GetFloat(
+    message: usize,
+    name: *const c_char,
+    value: *mut f32) -> tibems_status;
+  /// Get data values from a map message.
+  pub fn tibemsMapMsg_GetInt(
+    message: usize,
+    name: *const c_char,
+    value: *mut i32) -> tibems_status;
+  /// Get data values from a map message.
+  pub fn tibemsMapMsg_GetLong(
+    message: usize,
+    name: *const c_char,
+    value: *mut i64) -> tibems_status;
+  /// Get data values from a map message.
+  pub fn tibemsMapMsg_GetMapMsg(
+    message: usize,
+    name: *const c_char,
+    value: *mut c_void) -> tibems_status;
+  /// Get data values from a map message.
+  pub fn tibemsMapMsg_GetShort(
+    message: usize,
+    name: *const c_char,
+    value: *mut i16) -> tibems_status;
+  /// Get data values from a map message.
+  pub fn tibemsMapMsg_GetString(
+    message: usize,
+    name: *const c_char,
+    value: *mut *mut c_char) -> tibems_status;
+  /// Test if a named pair exists.
+  pub fn tibemsMapMsg_ItemExists(
+    message: usize,
+    name: *const c_char,
+    exists: *mut tibems_bool) -> tibems_status;
+  /// Set a byte array as a named value in a map message.
+  pub fn tibemsMapMsg_SetBytes(
+    message: usize,
+    name: *const c_char,
+    bytes: *mut c_void,
+    bytesSize: u64) -> tibems_status;
+  /// Set a byte array as a named value in a map message.
+  pub fn tibemsMapMsg_SetReferencedBytes(
+    message: usize,
+    name: *const c_char,
+    bytes: *mut c_void,
+    bytesSize: u64) -> tibems_status;
+  /// Set a name-value pair in a map message.
+  pub fn tibemsMapMsg_SetBoolean(
+      message: usize,
+      name: *const c_char,
+      value: tibems_bool) -> tibems_status;
+  /// Set a name-value pair in a map message.
+  pub fn tibemsMapMsg_SetByte(
+      message: usize,
+      name: *const c_char,
+      value: *const c_void) -> tibems_status;
+  /// Set a name-value pair in a map message.
+  pub fn tibemsMapMsg_SetChar(
+      message: usize,
+      name: *const c_char,
+      value: *const c_void) -> tibems_status;
+  /// Set a name-value pair in a map message.
+  pub fn tibemsMapMsg_SetDouble(
+      message: usize,
+      name: *const c_char,
+      value: f64) -> tibems_status;
+  /// Set a name-value pair in a map message.
+  pub fn tibemsMapMsg_SetFloat(
+      message: usize,
+      name: *const c_char,
+      value: f32) -> tibems_status;
+  /// Set a name-value pair in a map message.
+  pub fn tibemsMapMsg_SetInt(
+      message: usize,
+      name: *const c_char,
+      value: i32) -> tibems_status;
+  /// Set a name-value pair in a map message.
+  pub fn tibemsMapMsg_SetLong(
+      message: usize,
+      name: *const c_char,
+      value: i64) -> tibems_status;
+  /// Set a name-value pair in a map message.
+  pub fn tibemsMapMsg_SetShort(
+      message: usize,
+      name: *const c_char,
+      value: i16) -> tibems_status;
+  /// Set a name-value pair in a map message.
+  pub fn tibemsMapMsg_SetString(
+      message: usize,
+      name: *const c_char,
+      value: *const c_char) -> tibems_status;
+
   /// Acknowledge messages.
   pub fn tibemsMsg_Acknowledge(
     message: usize) -> tibems_status;
@@ -721,4 +852,19 @@ pub enum tibems_status{
   TIBEMS_UFO_CONNECTION_FAILURE      = 240,
   /// The function is not implemented.
   TIBEMS_NOT_IMPLEMENTED             = 255
+}
+
+/// Represents a message field or property.
+#[allow(dead_code)]
+#[repr(C)]
+#[derive(Copy,Clone,Debug)]
+pub struct tibemsMsgField{
+  /// One-byte indicator of the field’s datatype; for values, see the following table.
+  r#type: i8,
+  /// Size of the data (in bytes). Zero is a special value, indicating that the size is unknown.
+  size: i32,
+  /// Number of elements in the array.
+  count: i32,
+  /// Actual data in the field, or property value.
+  data: *const c_void
 }
