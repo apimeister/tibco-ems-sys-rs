@@ -458,18 +458,53 @@ extern "C" {
   /// Recover a single message.
   pub fn tibemsMsg_Recover(
     message: usize) -> tibems_status;
+  /// Set the value of a message property.
+  pub fn tibemsMsg_SetBooleanProperty(
+    message: usize,
+    name: *const c_char,
+    value: tibems_bool);
+  /// Set the value of a message property.
+  pub fn tibemsMsg_SetByteProperty(
+    message: usize,
+    name: *const c_char,
+    value: c_char);  
   /// Set the correlation ID header of a message.
   pub fn tibemsMsg_SetCorrelationID(
     message: usize,
     value: *const c_char) -> tibems_status;
+  /// Set the value of a message property.
+  pub fn tibemsMsg_SetDoubleProperty(
+    message: usize,
+    name: *const c_char,
+    value: f64); 
   /// Set the expiration header of a message.
   pub fn tibemsMsg_SetExpiration(
     message: usize,
     value: i64) -> tibems_status;
+  /// Set the value of a message property.
+  pub fn tibemsMsg_SetFloatProperty(
+    message: usize,
+    name: *const c_char,
+    value: f32);
+  /// Set the value of a message property.
+  pub fn tibemsMsg_SetIntProperty(
+    message: usize,
+    name: *const c_char,
+    value: i32);
+  /// Set the value of a message property.
+  pub fn tibemsMsg_SetLongProperty(
+    message: usize,
+    name: *const c_char,
+    value: i64);
   /// Set the reply-to header of a message.
   pub fn tibemsMsg_SetReplyTo(
     message: usize,
     value: usize) -> tibems_status;
+  /// Set the value of a message property.
+  pub fn tibemsMsg_SetShortProperty(
+    message: usize,
+    name: *const c_char,
+    value: i16); 
   /// Set the value of a message property.
   pub fn tibemsMsg_SetStringProperty(
     message: usize, 
