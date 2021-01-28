@@ -204,6 +204,26 @@ extern "C" {
   pub fn tibemsMsgProducer_Send(
     msgProducer: usize,
     message: usize) -> tibems_status;
+  /// Send a message.
+  pub fn tibemsMsgProducer_SendEx(
+    msgProducer: usize,
+    message: usize,
+    deliveryMode: tibemsDeliveryMode,
+    priority: i32,
+    timeToLive: i64) -> tibems_status;
+  /// Send a message.
+  pub fn tibemsMsgProducer_SendToDestination(
+    msgProducer: usize,
+    destination: usize,
+    message: usize) -> tibems_status;
+  /// Send a message.
+  pub fn tibemsMsgProducer_SendToDestinationEx(
+    msgProducer: usize,
+    destination: usize,
+    message: usize,
+    deliveryMode: tibemsDeliveryMode,
+    priority: i32,
+    timeToLive: i64) -> tibems_status;
   /// Destroy the producer object; reclaim resources.
   pub fn tibemsMsgProducer_Close(
     msgProducer: usize) -> tibems_status;
@@ -627,6 +647,20 @@ pub enum tibems_bool{
   TIBEMS_FALSE  = 0,
   /// true
   TIBEMS_TRUE   = 1
+}
+
+/// Define delivery mode constants.
+#[allow(dead_code)]
+#[allow(non_camel_case_types)]
+#[derive(Debug)]
+#[repr(C)]
+pub enum tibemsDeliveryMode{
+  /// Non-persistent delivery.
+  TIBEMS_NON_PERSISTENT  = 1,
+  /// Persistent delivery.
+  TIBEMS_PERSISTENT      = 2,
+  /// Reliable delivery mode is a TIBCO proprietary extension that offers increased performance of the message producers. See also RELIABLE_DELIVERY in TIBCO Enterprise Message Service User’s Guide.
+  TIBEMS_RELIABLE        = 22,
 }
 
 /// persistence type of a destination
