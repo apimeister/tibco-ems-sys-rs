@@ -9,11 +9,14 @@ fn main() {
     let user="admin";
     let password="admin";
 
-    let status = tibemsConnectionFactory_SetServerURL(factory, CString::new(url).unwrap().as_ptr());
+    let c_url = CString::new(url).unwrap();
+    let status = tibemsConnectionFactory_SetServerURL(factory, c_url.as_ptr());
     println!("tibemsConnectionFactory_SetServerURL: {:?}",status);
 
     let mut conn: usize = 0;
-    let status = tibemsConnectionFactory_CreateConnection(factory,&mut conn,CString::new(user).unwrap().as_ptr(),CString::new(password).unwrap().as_ptr());
+    let c_user = CString::new(user).unwrap();
+    let c_password = CString::new(password).unwrap();
+    let status = tibemsConnectionFactory_CreateConnection(factory,&mut conn,c_user.as_ptr(),c_password.as_ptr());
     println!("tibemsConnectionFactory_CreateConnection: {:?}",status);
 
     let mut sess: usize = 0;
@@ -22,7 +25,8 @@ fn main() {
 
     let dest_str = "myqueue";
     let mut dest: usize = 0;
-    let status = tibemsDestination_Create(&mut dest, tibemsDestinationType::TIBEMS_QUEUE, CString::new(dest_str).unwrap().as_ptr());
+    let c_dest = CString::new(dest_str).unwrap();
+    let status = tibemsDestination_Create(&mut dest, tibemsDestinationType::TIBEMS_QUEUE, c_dest.as_ptr());
     println!("tibemsDestination_Create: {:?}",status);
 
     let mut producer: usize = 0;
@@ -34,10 +38,13 @@ fn main() {
     println!("tibemsTextMsg_Create: {:?}",status);
 
     let content="hallo welt";
-    let status = tibemsTextMsg_SetText(msg,CString::new(content).unwrap().as_ptr());
+    let c_content = CString::new(content).unwrap();
+    let status = tibemsTextMsg_SetText(msg,c_content.as_ptr());
     println!("tibemsTextMsg_SetText: {:?}",status);
 
-    let status = tibemsMsg_SetStringProperty(msg,CString::new("key").unwrap().as_ptr(),CString::new("val").unwrap().as_ptr());
+    let c_key = CString::new("key").unwrap();
+    let c_val = CString::new("val").unwrap();
+    let status = tibemsMsg_SetStringProperty(msg,c_key.as_ptr(),c_val.as_ptr());
     println!("tibemsMsg_SetStringProperty: {:?}",status);
 
     let status = tibemsMsgProducer_Send(producer, msg);
