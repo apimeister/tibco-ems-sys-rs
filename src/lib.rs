@@ -20,38 +20,6 @@ extern "C" {
   pub fn tibemsSSLParams_Destroy(sslParams: *mut c_void);
   /// Get the text string corresponding to a status code.
   pub fn tibemsStatus_GetText(status: tibems_status) -> *const c_char;
-  /// Create an administration connection to a server.
-  pub fn tibemsAdmin_Create(admin: *mut tibemsAdmin,
-    url: *const c_char, userName: *const c_char,
-    password: *const c_char, sslparams: *mut c_void) -> tibems_status;
-  /// Close the administrative connection to the server.
-  pub fn tibemsAdmin_Close(admin: tibemsAdmin) -> tibems_status;
-  /// Get the current set of server metrics.
-  pub fn tibemsAdmin_GetInfo(
-    admin: tibemsAdmin,
-    serverInfo: *mut usize) -> tibems_status;
-  /// Get information about a destination of the given name.
-  pub fn tibemsAdmin_GetDestination(
-    admin: tibemsAdmin,
-    destInfo: *mut usize,
-    destName: *const c_char,
-    destType: usize) -> tibems_status;
-  /// Get the destinations that match the given pattern and the given permanence type.
-  pub fn tibemsAdmin_GetDestinations(
-    admin: tibemsAdmin,
-    collection: *mut usize,
-    pattern: *const c_char,
-    destType: tibemsDestinationType,
-    permType: tibems_permType,
-    statOnly: tibems_bool) ->tibems_status;
-  /// Get the command timeout.
-  pub fn tibemsAdmin_GetCommandTimeout(
-    admin: tibemsAdmin,
-    timeout: *mut i64);
-  /// Set the command timeout.
-  pub fn tibemsAdmin_SetCommandTimeout(
-    admin: tibemsAdmin,
-    timeout: i64) -> tibems_status;
   /// Get the total number of queues in the server.
   pub fn tibemsServerInfo_GetQueueCount(
     serverInfo: usize,
@@ -344,7 +312,7 @@ extern "C" {
   pub fn tibemsMapMsg_GetMapMsg(
     message: usize,
     name: *const c_char,
-    value: *mut c_void) -> tibems_status;
+    value: *mut usize) -> tibems_status;
   /// Get data values from a map message.
   pub fn tibemsMapMsg_GetShort(
     message: usize,
@@ -575,15 +543,6 @@ pub struct tibemsConnectionFactory{
 #[allow(dead_code)]
 #[repr(C)]
 pub struct tibemsMsg{
-  /// internal value
-  pub _val: usize
-}
-
-/// struct to hold the admin connection
-#[allow(dead_code)]
-#[repr(C)]
-#[derive(Copy,Clone,Debug)]
-pub struct tibemsAdmin{
   /// internal value
   pub _val: usize
 }
