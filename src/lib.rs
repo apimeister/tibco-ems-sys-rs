@@ -104,6 +104,10 @@ extern "C" {
     destination: *mut usize,
     destType: tibemsDestinationType,
     name: *const c_char) -> tibems_status;
+  /// Get the active URL of a connection.
+  pub fn tibemsConnection_GetActiveURL(
+    connection: usize,
+    serverURL: *const *const c_char) -> tibems_status;
   /// Destroy a destination object.
   pub fn tibemsDestination_Destroy(
     destination: usize) -> tibems_status;
