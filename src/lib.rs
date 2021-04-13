@@ -164,11 +164,11 @@ extern "C" {
   /// Delete a temporary queue.
   pub fn tibemsSession_DeleteTemporaryQueue(
     session: usize,
-    tmpQueue: *mut usize) -> tibems_status;
+    tmpQueue: usize) -> tibems_status;
   /// Delete a temporary topic.
   pub fn tibemsSession_DeleteTemporaryTopic(
     session: usize,
-    tmpTopic: *mut usize) -> tibems_status;
+    tmpTopic: usize) -> tibems_status;
 
   /// Create a text message.
   pub fn tibemsSession_CreateTextMessage(
