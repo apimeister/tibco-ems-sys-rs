@@ -153,6 +153,20 @@ extern "C" {
     session: usize,
     producer: *mut usize,
     destination: usize ) -> tibems_status;
+  /// create a shared topic consumer
+  pub fn tibemsSession_CreateSharedConsumer(
+    session: usize,
+    consumer: *mut usize,
+    topic: usize,
+    sharedSubscriptionName: *const c_char,
+    messageSelector: *const c_char) -> tibems_status;
+  /// create a shared durable topic consumer
+  pub fn tibemsSession_CreateSharedDurableConsumer(
+    session: usize,
+    consumer: *mut usize,
+    topic: usize,
+    durableName: *const c_char,
+    messageSelector: *const c_char) -> tibems_status;
   /// Create a temporary queue.
   pub fn tibemsSession_CreateTemporaryQueue(
     session: usize,
