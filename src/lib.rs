@@ -440,6 +440,10 @@ extern "C" {
   pub fn tibemsMsg_GetCorrelationID(
     message: usize,
     value: *const *const c_char) -> tibems_status;
+  /// Get the destination header from a message.
+  pub fn tibemsMsg_GetDestination(
+    message: usize,
+    value: *mut usize) -> tibems_status;
   /// Get the message ID header from a message.
   pub fn tibemsMsg_GetMessageID(
     message: usize,
@@ -487,6 +491,10 @@ extern "C" {
   pub fn tibemsMsg_SetCorrelationID(
     message: usize,
     value: *const c_char) -> tibems_status;
+  /// Set the destination header of a message. 
+  pub fn tibemsMsg_SetDestination(
+    message: usize,
+    value: usize) -> tibems_status;
   /// Set the value of a message property.
   pub fn tibemsMsg_SetDoubleProperty(
     message: usize,
