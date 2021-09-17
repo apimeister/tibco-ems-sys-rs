@@ -274,7 +274,7 @@ extern "C" {
   /// Get the body data of a bytes message.
   pub fn tibemsBytesMsg_GetBytes(
     message: usize,
-    bytes: *mut *mut c_void,
+    bytes: *const *const c_char,
     byteSize: *mut u32) -> tibems_status;
   /// Set the body data of a bytes message from a byte sequence.
   pub fn tibemsBytesMsg_SetBytes(
@@ -303,7 +303,7 @@ extern "C" {
   pub fn tibemsMapMsg_GetBytes(
     message: usize,
     name: *const c_char,
-    bytes: *const *const c_void,
+    bytes: *const *const c_char,
     bytesSize: *mut u32) -> tibems_status;
   /// Get data values from a map message.
   pub fn tibemsMapMsg_GetChar(
