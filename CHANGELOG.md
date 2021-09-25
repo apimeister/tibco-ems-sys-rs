@@ -1,3 +1,11 @@
+# 1.0.2
+
+* support object message
+
+# 1.0.1
+
+* fix binary getBytes call
+
 # 1.0.0
 
 * bump version to 1.0

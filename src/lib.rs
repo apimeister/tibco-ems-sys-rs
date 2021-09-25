@@ -545,6 +545,20 @@ extern "C" {
     enumeration: usize,
     name: *const *const c_char) -> tibems_status;
 
+  /// Create an object message.
+  pub fn tibemsObjectMsg_Create(
+    message: *mut usize) -> tibems_status;
+  /// Get the byte sequence representing a serialized object from a message. 
+  pub fn tibemsObjectMsg_GetObjectBytes(
+    message: usize,
+    bytes: *const *const c_char,
+    byteSize: *mut u32) -> tibems_status;
+  /// Set the byte sequence of an object message. 
+  pub fn tibemsObjectMsg_SetObjectBytes(
+    message: usize,
+    bytes: *const c_void,
+    byteSize: u32) -> tibems_status;
+
   /// Create a text message.
   pub fn tibemsTextMsg_Create(
     message: *mut usize) -> tibems_status;
