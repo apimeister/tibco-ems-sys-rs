@@ -1,3 +1,7 @@
+# 1.0.3
+
+* make get_bytes unsigned
+
 # 1.0.2
 
 * support object message

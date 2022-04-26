@@ -4,6 +4,7 @@
 
 use std::ffi::c_void;
 use std::os::raw::c_char;
+use std::os::raw::c_uchar;
 
 #[allow(dead_code)]
 extern "C" {
@@ -274,7 +275,7 @@ extern "C" {
   /// Get the body data of a bytes message.
   pub fn tibemsBytesMsg_GetBytes(
     message: usize,
-    bytes: *const *const c_char,
+    bytes: *const *const c_uchar,
     byteSize: *mut u32) -> tibems_status;
   /// Set the body data of a bytes message from a byte sequence.
   pub fn tibemsBytesMsg_SetBytes(
