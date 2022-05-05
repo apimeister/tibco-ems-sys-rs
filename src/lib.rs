@@ -552,7 +552,7 @@ extern "C" {
   /// Get the byte sequence representing a serialized object from a message. 
   pub fn tibemsObjectMsg_GetObjectBytes(
     message: usize,
-    bytes: *const *const c_char,
+    bytes: *const *const c_uchar,
     byteSize: *mut u32) -> tibems_status;
   /// Set the byte sequence of an object message. 
   pub fn tibemsObjectMsg_SetObjectBytes(

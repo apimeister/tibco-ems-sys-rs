@@ -1,3 +1,7 @@
+# 1.0.4
+
+* make get_bytes unsigned for object messages
+
 # 1.0.3
 
 * make get_bytes unsigned
