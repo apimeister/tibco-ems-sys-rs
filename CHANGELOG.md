@@ -1,3 +1,7 @@
+# 1.0.5
+
+* support build msg from bytes
+
 # 1.0.4
 
 * make get_bytes unsigned for object messages

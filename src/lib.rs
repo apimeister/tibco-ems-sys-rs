@@ -420,6 +420,11 @@ extern "C" {
   /// Create a message object.
   pub fn tibemsMsg_Create(
     message: *mut usize) -> tibems_status;
+  /// Create a message object from data in a byte sequence.
+  pub fn tibemsMsg_CreateFromBytes(
+    message: usize,
+    bytes: *mut c_void,
+  ) -> tibems_status;
   /// Destroy a message.
   pub fn tibemsMsg_Destroy(
     message: usize) -> tibems_status;
